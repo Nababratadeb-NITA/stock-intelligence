@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 import { fetchStock } from "@/lib/api";
 import HistoryChart from "./HistoryChart";
@@ -228,7 +231,9 @@ function getPercentClass(value: number | null) {
 export default async function StockPage({
   params,
   searchParams,
-}: Props) {
+  }: Props) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user) redirect("/login");
 
   const { ticker } = await params;
   const { exchange } = await searchParams;
