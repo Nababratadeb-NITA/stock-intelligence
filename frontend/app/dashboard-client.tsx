@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
 
 import {
@@ -107,6 +108,7 @@ function trendClass(trend: string | null) {
 
 
 export default function Home({ userName }: { userName: string }) {
+  const router = useRouter();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
 
@@ -311,7 +313,8 @@ export default function Home({ userName }: { userName: string }) {
             className="logout-button"
             onClick={async () => {
               await signOut();
-              window.location.assign("/login");
+              router.push("/login");
+              router.refresh();
             }}
           >
             Sign out
